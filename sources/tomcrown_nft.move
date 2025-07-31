@@ -51,7 +51,7 @@ fun init(otw: TOMCROWN_NFT, ctx: &mut TxContext) {
 
 
 #[allow(lint(self_transfer))]
-public fun mint_to_sender(
+public entry fun mint_to_sender( 
     name: vector<u8>,
     description: vector<u8>,
     url: vector<u8>,
@@ -60,16 +60,16 @@ public fun mint_to_sender(
     let sender = ctx.sender();
     let nft = TomNFT {
         id: object::new(ctx),
-        name: string::utf8(name),
-        description: string::utf8(description),
+        name: utf8(name),
+        description: utf8(description),
         image_url: url::new_unsafe_from_bytes(url),
     };
-
+ 
     event::emit(NFTMinted {
-        name: string::utf8(name),
-        description: string::utf8(description),
-        image_url: url::new_unsafe_from_bytes(url),
+        name: nft.name,
+        description: nft.description,
+        image_url: nft.image_url,
     });
-
+ 
     transfer::public_transfer(nft, sender);
 }
